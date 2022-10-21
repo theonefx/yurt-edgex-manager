@@ -2,7 +2,7 @@
 # Define registries
 STAGING_REGISTRY ?= openyurt
 IMAGE_NAME ?= yurt-edgex-manager
-TAG ?= v0.2.0
+TAG ?= v0.2.1
 
 IMG ?= ${STAGING_REGISTRY}/${IMAGE_NAME}:${TAG}
 

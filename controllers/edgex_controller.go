@@ -364,10 +364,22 @@ NextUD:
 			}
 			desirespec := desireDeployment.Spec.DeepCopy()
 
-			if edgex.Spec.ImageRegistry != "" {
-				for i := range desirespec.Template.Spec.Containers {
-					desirespec.Template.Spec.Containers[i].Image = edgex.Spec.ImageRegistry + "/" + desirespec.Template.Spec.Containers[i].Image
-				}
+			defaultRegistry := edgex.Spec.ImageRegistry
+
+			if defaultRegistry == "" {
+				defaultRegistry = "openyurt"
+			}
+
+			for i := range desirespec.Template.Spec.Containers {
+				desirespec.Template.Spec.Containers[i].Image = defaultRegistry + "/" + desirespec.Template.Spec.Containers[i].Image
+			}
+
+			if edgex.Spec.ImagePullSecrets != nil && len(edgex.Spec.ImagePullSecrets) > 0 {
+				desirespec.Template.Spec.ImagePullSecrets = edgex.Spec.ImagePullSecrets
+			}
+
+			if edgex.Spec.Tolerations != nil && len(edgex.Spec.Tolerations) > 0 {
+				desirespec.Template.Spec.Tolerations = edgex.Spec.Tolerations
 			}
 
 			ud = &unitv1alpha1.UnitedDeployment{

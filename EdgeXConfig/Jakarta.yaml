@@ -153,6 +153,8 @@ deployments:
         containers:
         - name: edgex-redis
           image: redis:6.2.6-alpine
+          args:
+            - --ignore-warnings ARM64-COW-BUG
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 6379
